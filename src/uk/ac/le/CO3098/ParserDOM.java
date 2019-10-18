@@ -10,6 +10,10 @@ import org.w3c.dom.NodeList;
 //Note: you need to implement either ParserDOM.java OR ParserSAX.java
 
 public class ParserDOM {
+	//****************************************
+	// CHANGE INPUT BACK TO CONSOLE ARG[0] NOT DIRECTLY FROM XML FILE!!!!!!!!!!!!!
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//****************************************
 
 	/*
 	 * Will contain information about the methods that are parsed.
@@ -58,7 +62,7 @@ public class ParserDOM {
 				}
 			
 			case Node.TEXT_NODE: {
-				handleElement(node);
+				handleText(node);
 			}
 				
 			}
@@ -113,7 +117,7 @@ public class ParserDOM {
 	 */
 	private static void handleText(Node node) {
 		String chData = node.getNodeValue().trim(); // removes all leading and trailing space
-		if (chData.indexOf("\n") < 0 && chData.length() > 0 && dataIndex > -1) { //there are no line breaks & if it contains something
+		if (chData.indexOf("\n") < 0 && chData.length() > 0 && dataIndex > -1 && methodIndex > -1) { //there are no line breaks & if it contains something
 			if(dataIndex == access) 		  { methodArray[methodIndex][dataIndex] = chData; }
 			if (dataIndex == include)         {methodArray[methodIndex][dataIndex] += chData+":";}//access + delimeter
 //			if (dataIndex == abstract_method) {/*abstract method tag contains no text*/};
@@ -155,6 +159,10 @@ public class ParserDOM {
 	 * @return
 	 */
 	private static void printMethods () {
+		//****************************************
+		// CHANGE INPUT BACK TO CONSOLE ARG[0] NOT DIRECTLY FROM XML FILE!!!!!!!!!!!!!
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//****************************************
 		System.out.println("\nprintMethods: methodIndex before = "+ methodIndex + "\n");
 		for (int mIndex = 0; mIndex < methodIndex; mIndex++) {
 			System.out.println("\nprintMethods: methodIndex after = "+ methodIndex + "\n");
