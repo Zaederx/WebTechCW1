@@ -14,10 +14,11 @@ public class XMLParserLauncher {
 
 		 ParserDOM parser=new ParserDOM();
 		// or XMLParserSAX parser = new XMLParserSAX();
-		 if(args.length == 0) {
-			 throw new IllegalArgumentException("Usage: java XMLParserLauncher xmlfile");
-		 }
-		 parser.parse(args[0]);
+//		 if(args.length == 0) {
+//			 throw new IllegalArgumentException("Usage: java XMLParserLauncher xmlfile");
+//		 }
+//		 parser.parse(args[0]);
+		 parser.parse("IAuthService.xml");
 		 }catch(Exception ex) {
 			 ex.printStackTrace();
 		 }
