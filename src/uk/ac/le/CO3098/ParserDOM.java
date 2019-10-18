@@ -119,7 +119,7 @@ public class ParserDOM {
 			if(dataIndex == access) 		  { methodArray[methodIndex][dataIndex] = chData; }
 //			if (dataIndex == abstract_method) {/*abstract method tag contains no text*/};
 			if (dataIndex == parameter)       {methodArray[methodIndex][dataIndex] += chData+", ";}//parameter + delimeter and space
-			if (dataIndex == _throws)         {methodArray[methodIndex] [dataIndex] += chData+":";}//
+			if (dataIndex == _throws)         {methodArray[methodIndex] [dataIndex] += chData+" ";}//
 			if (dataIndex == _return)		  {methodArray[methodIndex][dataIndex] =  chData;
 			}
 		}
@@ -163,7 +163,7 @@ public class ParserDOM {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//****************************************
 		System.out.println("\nprintMethods: methodIndex before = "+ methodIndex + "\n");
-		for (int mIndex = 0; mIndex < methodIndex; mIndex++) {
+		for (int mIndex = 0; mIndex <= methodIndex; mIndex++) {
 			System.out.println("\nprintMethods: methodIndex after = "+ methodIndex + "\n");
 			for (int dIndex = 0; dIndex < 20; dIndex++) {
 				System.out.print(methodArray[mIndex][dIndex]+ " ");
