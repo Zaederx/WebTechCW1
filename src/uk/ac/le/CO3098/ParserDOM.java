@@ -26,10 +26,11 @@ public class ParserDOM {
 	/*
 	 * Each integer represents a dataIndex for a particular type of data in the methodArray.
 	 */
-	static int access = 0, include = 1, abstract_method = 2, parameter = 3, _throws = 4, _return = 5;
+	static int access = 0, abstract_method = 2, parameter = 3, _throws = 4, _return = 1;
 	
 	
 	public void parse(String xml) {
+		initialiseArray(methodArray);
 	  try{
 	  		DOMParser parser = new DOMParser();
 	  		parser.parse(xml);
@@ -86,9 +87,6 @@ public class ParserDOM {
 		if (elementName.equals("access")) {
 			dataIndex = access;
 		}
-		if (elementName.equals("include")) { 
-			dataIndex = include;
-		}
 		if (elementName.equals("abstract_method")) {
 			System.out.println("\nhandleElement: methodIndex before = "+ methodIndex + "\n");
 			++methodIndex;
@@ -117,12 +115,13 @@ public class ParserDOM {
 	 */
 	private static void handleText(Node node) {
 		String chData = node.getNodeValue().trim(); // removes all leading and trailing space
-		if (chData.indexOf("\n") < 0 && chData.length() > 0 && dataIndex > -1 && methodIndex > -1) { //there are no line breaks & if it contains something
+		if (chData.length() > 0 && dataIndex > -1 && methodIndex > -1) { //there are no line breaks & if it contains something
 			if(dataIndex == access) 		  { methodArray[methodIndex][dataIndex] = chData; }
-			if (dataIndex == include)         {methodArray[methodIndex][dataIndex] += chData+":";}//access + delimeter
 //			if (dataIndex == abstract_method) {/*abstract method tag contains no text*/};
-			if (dataIndex == parameter)       {methodArray[methodIndex][dataIndex] += chData+": ";}//parameter + delimeter and space
+			if (dataIndex == parameter)       {methodArray[methodIndex][dataIndex] += chData+", ";}//parameter + delimeter and space
 			if (dataIndex == _throws)         {methodArray[methodIndex] [dataIndex] += chData+":";}//
+			if (dataIndex == _return)		  {methodArray[methodIndex][dataIndex] =  chData;
+			}
 		}
 	}
 	
@@ -167,7 +166,7 @@ public class ParserDOM {
 		for (int mIndex = 0; mIndex < methodIndex; mIndex++) {
 			System.out.println("\nprintMethods: methodIndex after = "+ methodIndex + "\n");
 			for (int dIndex = 0; dIndex < 20; dIndex++) {
-				System.out.print(methodArray[mIndex][dIndex]);
+				System.out.print(methodArray[mIndex][dIndex]+ " ");
 			}
 //			System.out.println("\n");
 			
@@ -184,12 +183,12 @@ public class ParserDOM {
 		return methodArray[methodIndex][access];
 	}
 	
-	
-	/**
-	 * Returns a String containing the 
-	 * @return
-	 */
-	private static String getInclude() {
-		return methodArray[methodIndex][include];
+	private static void initialiseArray(String[][] arr) {
+		for (int i = 0; i < arr.length; i++) {
+			for (int j = 0; j < arr.length; j++) {
+				arr[i][j] = "";
+			}
+		}
 	}
+	
 }
