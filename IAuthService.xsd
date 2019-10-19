@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xsd:schema xmlns:xsd= "http://www.w3.org/2001/XMLSchema">
+  <!--element defintition-->
+  <xsd:element name="interface" type="interface"/>
+  <xsd:element name="package" type="xsd:string"/>
+  <xsd:element name="include" type="xsd:string" />
+  <xsd:element name="abstract_method" type="abstract_method"/>
+  <xsd:element name="parameter" type="parameter"/>
+  <xsd:element name="access" type="xsd:string"/>
+  <xsd:element name="parameterList" type="parameterList"/>
+  <xsd:element name="exceptions" type="exceptions"/>
+  <xsd:element name="return" type="xsd:string"/>
+
+
+  <!--attribute definitions-->
+  <xsd:attribute name= "name" type="xsd:string"/>
+  <xsd:attribute name="id" type="xsd:string"/>
+
+  <xsd:attribute name="type">
+    <xsd:simpleType>
+      <xsd:restriction base="xsd:string">
+        <!-- <xsd:pattern value="int|String"/> -->
+        <!-- <xsd:enumeration value="int"/>
+        <xsd:enumeration value="String"/> -->
+      </xsd:restriction>
+    </xsd:simpleType>
+  </xsd:attribute>
+
+  <!--complex type definitions-->
+
+<!-- INTERFACE-->
+  <xsd:complexType name="interface">
+    <xsd:sequence>
+      <!-- <xsd:attribute name= "name" ref="interface_name"/> -->
+      <xsd:element ref="package" maxOccurs="1"/>
+      <xsd:element ref="include" maxOccurs="unbounded"/>
+      <xsd:element ref="abstract_method" maxOccurs="unbounded"/>
+    </xsd:sequence>
+    <xsd:attribute ref="name"/>
+  </xsd:complexType>
+
+
+<!-- <xsd:element name="interface_name" type="xsd:string"/> -->
+
+<!-- ABSTRACT METHOD-->
+  <xsd:complexType name="abstract_method">
+    <xsd:sequence>
+      <xsd:element ref="access" maxOccurs="1"/>
+      <xsd:element ref="parameterList" maxOccurs="1"/>
+      <xsd:element ref="exceptions" minOccurs="0" maxOccurs="unbounded"/>
+      <xsd:element ref="return" maxOccurs="1"/>
+    </xsd:sequence>
+    <xsd:attribute ref="id"/>
+  </xsd:complexType>
+
+
+
+  <xsd:complexType name="parameterList">
+    <xsd:sequence>
+      <xsd:element ref="parameter" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="parameter">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attribute ref="type"/>
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+
+  <!--EXCEPTIONS-->
+  <xsd:complexType name="exceptions">
+    <xsd:sequence>
+    <xsd:element name="throws" type="xsd:string" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>
