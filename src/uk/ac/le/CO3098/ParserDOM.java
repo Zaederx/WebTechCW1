@@ -9,11 +9,14 @@ import org.w3c.dom.NodeList;
 
 //Note: you need to implement either ParserDOM.java OR ParserSAX.java
 
+/**
+ * Class with implements the DOM Parser.
+ * The class parses a provided XML that follows a specific
+ * interface schema (IAuthService.xsd) and prints out any defined classes.
+ * @author zacharyishmael
+ *
+ */
 public class ParserDOM {
-	//****************************************
-	// CHANGE INPUT BACK TO CONSOLE ARG[0] NOT DIRECTLY FROM XML FILE!!!!!!!!!!!!!
-	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	//****************************************
 
 	/*
 	 * Will contain information about the methods that are parsed.
@@ -26,9 +29,13 @@ public class ParserDOM {
 	/*
 	 * Each integer represents a dataIndex for a particular type of data in the methodArray.
 	 */
-	static int access = 0, abstract_method = 2, parameter = 3, _throws = 4, _return = 1;
+	static int access = 0, _return = 1,  abstract_method = 2, parameter = 3, _throws = 4;
 	
-	
+	/**
+	 * A method used to parse the XML.
+	 * Calls the traverse_tree.
+	 * @param xml
+	 */
 	public void parse(String xml) {
 		initialiseArray(methodArray);
 	  try{
@@ -43,9 +50,11 @@ public class ParserDOM {
 	       }
     }
 	
-	static int numberOfSpaces=0;
+	/**
+	 * A method used to traverse all tree nodes.
+	 * @param node - a node of the XML document
+	 */
 	public static void traverse_tree(Node node){
-		numberOfSpaces++;
 		if(node == null) {
 			return;
 		}
@@ -71,9 +80,9 @@ public class ParserDOM {
 	
 	/**
 	 * A method which selects an element node and calls  other methods to retrieve that elements information.
-	 * The mothods also called another method which traverse child nodes of the element node (see traverseChild)
+	 * The mothods also called another method which traverse child nodes of the element node (see traverseChild).
 	 * Only retrieves element information that matches specific nodes:
-	 *  - include
+	 *  - access
 	 *  - abstract_method
 	 *  - parameter
 	 *  - return
@@ -82,15 +91,12 @@ public class ParserDOM {
 	private static void handleElement(Node node) {
 		dataIndex = -1;
 		String elementName = node.getNodeName();
-		System.out.println(elementName);
 		NamedNodeMap attributes = node.getAttributes();
 		if (elementName.equals("access")) {
 			dataIndex = access;
 		}
 		if (elementName.equals("abstract_method")) {
-			System.out.println("\nhandleElement: methodIndex before = "+ methodIndex + "\n");
 			++methodIndex;
-			System.out.println("\nhandleElement: methodIndex after = "+ methodIndex + "\n");
 			dataIndex =  abstract_method;
 			methodArray[methodIndex][dataIndex] = getAttributeValue("id", attributes);
 		}
@@ -128,7 +134,7 @@ public class ParserDOM {
 	
 	/**
 	 * A method which select an attribute out of the list of element attributes.
-	 * It then takes returns the attribute's value as a string
+	 * It then takes returns the attribute's value as a string.
 	 * @param attrString - the name of the attribute you would like to select and recover information in the current element node
 	 * @param attributes - the attributes of the current node
 	 * @return String attrValue - value of the selected attribute
@@ -141,7 +147,7 @@ public class ParserDOM {
 	
 	/**
 	 * A method used to traverse the childNodes of a traversed node.
-	 * @param node - the node who's childNodes will be traversed
+	 * @param node - the node who's childNodes will be traversed.
 	 */
 	private static void traverseChildNodes (Node node) {
 		NodeList childNodes = node.getChildNodes();
@@ -154,35 +160,46 @@ public class ParserDOM {
 	}
 
 	/**
-	 * A method to return the information of methods that are in the xml tree.
-	 * @return
+	 * A method to print contents of the methodArray.
+	 * Prints access modifier, return type, parameters and 
+	 * exceptions of methods inside the array.
 	 */
 	private static void printMethods () {
-		//****************************************
-		// CHANGE INPUT BACK TO CONSOLE ARG[0] NOT DIRECTLY FROM XML FILE!!!!!!!!!!!!!
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//****************************************
-		System.out.println("\nprintMethods: methodIndex before = "+ methodIndex + "\n");
 		for (int mIndex = 0; mIndex <= methodIndex; mIndex++) {
-			System.out.println("\nprintMethods: methodIndex after = "+ methodIndex + "\n");
 			for (int dIndex = 0; dIndex < 20; dIndex++) {
-				System.out.print(methodArray[mIndex][dIndex]+ " ");
-			}
-//			System.out.println("\n");
-			
+				if(dIndex!= 0 && dIndex != _throws) {
+					System.out.print(" ");// put a space between each methodArray section
+				}
+				if(dIndex == parameter) { //brackets for parameters
+					System.out.print("("); 
+					String s = methodArray[mIndex][dIndex];
+					methodArray[mIndex][dIndex] = s.substring(0, methodArray[mIndex][dIndex].length()-2);
+					//to remove the ", " from the end of the parameter string
+				}
+				if(dIndex == _throws) {
+					System.out.print(")");
+					if(!methodArray[mIndex][dIndex].isEmpty()) {
+						System.out.print("\n     throws");
+						System.out.print(methodArray[mIndex][dIndex]);
+						System.out.print(";");
+					} else {
+						System.out.print(";");
+					}
+				} 
+				if (dIndex != parameter) {
+					System.out.print(" ");}	
+				System.out.print(methodArray[mIndex][dIndex]);
+				}
+			System.out.println("\n");
 		}
 	}
 	
-	//******** Helper Methods to retrieve specific data from each method*********
-	
 	/**
-	 * Returns a string containing the access modifier of the method.
-	 * @return String containing access level of method
+	 * A method to initalise the methodArray with empty strings.
+	 * Needed to prevent null input being stored with with array output.
+	 * 
+	 * @param arr - the array to be initialised
 	 */
-	private static String getAccess() {
-		return methodArray[methodIndex][access];
-	}
-	
 	private static void initialiseArray(String[][] arr) {
 		for (int i = 0; i < arr.length; i++) {
 			for (int j = 0; j < arr.length; j++) {
