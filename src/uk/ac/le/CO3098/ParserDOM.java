@@ -125,7 +125,7 @@ public class ParserDOM {
 			if(dataIndex == access) 		  { methodArray[methodIndex][dataIndex] = chData; }
 //			if (dataIndex == abstract_method) {/*abstract method tag contains no text*/};
 			if (dataIndex == parameter)       {methodArray[methodIndex][dataIndex] += chData+", ";}//parameter + delimeter and space
-			if (dataIndex == _throws)         {methodArray[methodIndex] [dataIndex] += chData+" ";}//
+			if (dataIndex == _throws)         {methodArray[methodIndex] [dataIndex] += chData+", ";}//
 			if (dataIndex == _return)		  {methodArray[methodIndex][dataIndex] =  chData;
 			}
 		}
@@ -177,17 +177,18 @@ public class ParserDOM {
 					//to remove the ", " from the end of the parameter string
 				}
 				if(dIndex == _throws) {
-					System.out.print(")");
+					System.out.print(")");//closing bracket for parameters
 					if(!methodArray[mIndex][dIndex].isEmpty()) {
-						System.out.print("\n     throws");
+						System.out.print("\n     throws ");
+						String s = methodArray[mIndex][dIndex];
+						methodArray[mIndex][dIndex] = s.substring(0, methodArray[mIndex][dIndex].length()-2);
 						System.out.print(methodArray[mIndex][dIndex]);
 						System.out.print(";");
 					} else {
 						System.out.print(";");
 					}
-				} 
-				if (dIndex != parameter) {
-					System.out.print(" ");}	
+				} 	
+				if (dIndex != _throws)
 				System.out.print(methodArray[mIndex][dIndex]);
 				}
 			System.out.println("\n");
